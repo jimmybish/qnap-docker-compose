@@ -2,14 +2,14 @@ version: "2.1"
 services:
   nzbget:
     image: ghcr.io/linuxserver/nzbget
-    container_name: nxbget
+    container_name: nzbget
     environment:
       - PUID=1004
       - PGID=1000
       - TZ=Australia/Hobart
     volumes:
       - /share/Container/nzbget:/config
-      - /share/Download/NZBGet:downloads
+      - /share/Download/NZBGet:/downloads
     ports:
       - 6789:6789
     restart: unless-stopped
@@ -38,7 +38,7 @@ services:
       - TZ=Europe/London
     volumes:
       - /share/Container/sonarr:/config
-      - /share/Multimedia/TV Shows:/tv
+      - /share/Multimedia/TV\ Shows:/tv
       - /share/Download/NZBGet/completed/TV:/downloads
     ports:
       - 8989:8989
