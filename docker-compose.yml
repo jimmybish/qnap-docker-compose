@@ -1,1 +1,45 @@
+version: "2.1"
+services:
+  nzbget:
+    image: ghcr.io/linuxserver/nzbget
+    container_name: nxbget
+    environment:
+      - PUID=1004
+      - PGID=1000
+      - TZ=Australia/Hobart
+    volumes:
+      - /share/Container/nzbget:/config
+      - /share/Download/NZBGet:downloads
+    ports:
+      - 6789:6789
+    restart: unless-stopped
+  
+  radarr:
+    image: ghcr.io/linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1004
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /share/Container/radarr:/config
+      - /share/Download/NZBGet/completed/Movies:/movies
+      - /share/Download/NZBGet/completed/Movies:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
 
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1004
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /share/Container/sonarr:/config
+      - /share/Multimedia/TV Shows:/tv
+      - /share/Download/NZBGet/completed/TV:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
