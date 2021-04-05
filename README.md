@@ -46,12 +46,18 @@ All containers except Plex use the standard NAT configuration, since they only r
 Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the media server in a NAT'ted container can also be a PITA since the incoming connection needs to be on the same subnet. You can Google something like `Plex docker claim server SSH tunnel` and check the [container documentation](https://hub.docker.com/r/linuxserver/plex) for required ports if you want to chase that path. I just set `network_mode: host` to make it all just work.
 
 ### User accounts and permissions
-Containers are configured to run as the `docker-pirate` user, which is also a member of the `docker` group (in case I want to create containers that run as other users).
+Containers are configured to run as the `docker-plex` user, which is also a member of the `docker` group (in case I want to create containers that run as other users).
 ```
-# id docker-pirate
-uid=1004(docker-pirate) gid=100(everyone) groups=100(everyone),1000(docker)
+$ id docker-plex
+uid=1004(docker-plex) gid=100(everyone) groups=100(everyone),1000(docker)
+
+# From the yml:
+      - PUID=1004
+      - PGID=1000
 ```
-All shared folders are owned by `docker-pirate:docker`.
+All app folders are owned by `docker-plex:docker`, while the `docker` group has RW access to the media shares.
+
+You will need to create a user and group and map to those IDs in each container config if you're like me and keep things separate and nailed down. Otherwise, set both the `PUID` and `PGID` values to 0, which is the `admin` user.
 
 ## Controlling the containers
 `Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified.
