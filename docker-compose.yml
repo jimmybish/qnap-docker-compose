@@ -57,6 +57,7 @@ services:
       - /share/Multimedia/TV:/tv
       - /share/Multimedia/Movies:/movies
       - /share/Multimedia/Pictures:/photos
+      - /share/Backups/plex_db:/db_backups
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
