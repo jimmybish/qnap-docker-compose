@@ -93,7 +93,7 @@ Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the m
 ## Controlling the Containers
 `Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified.
 
-### Starting
+### Starting and Applying Updated Config
 ```
 docker-compose up -d
 ```
