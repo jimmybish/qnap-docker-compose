@@ -9,6 +9,7 @@ I wanted to make all my apps on my QNAP NAS portable so they're easy to restore 
 
 ## Steps and Container Doco
 ### Clone this repository
+QNAPs don't come with Git installed by default. I grabbed Qgit from the [QNAPClub repo](https://www.qnapclub.eu/en).
 ```
 git clone https://github.com/jimmybish/qnap-docker-compose.git
 ```
