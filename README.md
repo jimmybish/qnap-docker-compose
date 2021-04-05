@@ -77,7 +77,7 @@ Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the m
     rm -rf /share/Container/plex/Library
     cp -a /share/CACHEDEV1_DATA/.qpkg/PlexMediaServer/Library/Plex\ Media\ Server /share/Container/plex/Library/Application\ Support/
     ```
-1. Edit the `Preferences.xml` file in the new `Plex Media Server` folder and ensure you have a good place for automatic DB backups. I chose a share separate redundant volume that regularly mirrors to a cloud provider. Update `ButlerDatabaseBackupPath=` with the new path location and save the file.
+1. Edit the `Preferences.xml` file in the new `Plex Media Server` folder and ensure you have a good place for automatic DB backups. I chose a share on a separate volume that regularly mirrors to a cloud provider. Update `ButlerDatabaseBackupPath=` with the new path location and save the file.
 1. Rebuild and start the container, and check the logs for any errors:
     ```
     docker-compose up -d
