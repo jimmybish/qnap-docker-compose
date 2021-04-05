@@ -59,33 +59,6 @@ You will need to create a user and group and map to your user's IDs in each cont
 All containers except Plex use the standard NAT configuration, since they only require a single incoming port to the web interface. I've kept the port as the default for both inside and outside the container to keep it simple.
 Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the media server in a NAT'ted container can also be a PITA since the incoming connection needs to be on the same subnet. You can Google something like `Plex docker claim server SSH tunnel` and check the [container documentation](https://hub.docker.com/r/linuxserver/plex) for required ports if you want to chase that path. I just set `network_mode: host` to make it all just work.
 
-## Controlling the containers
-`Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified.
-
-### Starting
-```
-docker-compose up -d
-```
-This will ensure all containers are in a running state. If any are already running, nothing will happen to them, but any others will be downloaded/reconfigured/started, as required. 
-
-### Stopping
-```
-docker-compose stop plex
-```
-This will stop just the Plex container. Replace with the name of any other to stop that container.
-
-### Updating
-```
-docker-compose pull
-```
-This will update all containers to their latest version. Specify the name of a container to update only that one.
-
-### Tail logs
-```
-docker-compose logs -f plex
-```
-Tail logs for Plex. Replace with the name of any other to tail logs within that container.
-
 ## Migrate Plex from QPKG to Docker
 
 1. Stop Plex in App Center.
@@ -115,3 +88,30 @@ Tail logs for Plex. Replace with the name of any other to tail logs within that 
 1. The container configuration passes QNAP's video device for hardware transcoding with `/dev/dri:/dev/dri`. Ensure hardware acceleration is still enabled under **Settings** -> **Transcoder**.
 1. Watch something from each library. Hopefully it works!
 1. With everything confirmed up and running, go ahead and uninstall the old Plex QPKG instance in Application in App Center.
+
+## Controlling the Containers
+`Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified.
+
+### Starting
+```
+docker-compose up -d
+```
+This will ensure all containers are in a running state. If any are already running, nothing will happen to them, but any others will be downloaded/reconfigured/started, as required. 
+
+### Stopping
+```
+docker-compose stop plex
+```
+This will stop just the Plex container. Replace with the name of any other to stop that container.
+
+### Updating
+```
+docker-compose pull
+```
+This will update all containers to their latest version. Specify the name of a container to update only that one.
+
+### Tail logs
+```
+docker-compose logs -f plex
+```
+Tail logs for Plex. Replace with the name of any other to tail logs within that container.
