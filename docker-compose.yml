@@ -56,6 +56,7 @@ services:
       - /share/Container/plex:/config
       - /share/Multimedia/TV:/tv
       - /share/Multimedia/Movies:/movies
+      - /share/Multimedia/Pictures:/photos
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
