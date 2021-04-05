@@ -25,18 +25,19 @@ Folders required:
 
 # Radarr
   - /share/Container/radarr:/config   # App configuration data
-  - /share/Multimedia/Movies:/movies  # Folder where movies are stored (Where Plex reads it from)
+  - /share/Multimedia/Movies:/movies  # Folder on the NAS where movies are stored (Where Plex reads it from)
   - /share/Download/NZBGet/completed/Movies:/downloads  # Folder where completed movie downloads are stored (Where NZBGet drops them)
 
 # Sonarr
   - /share/Container/sonarr:/config   # App configuration data
-  - /share/Multimedia/TV:/tv          # Folder where TV episodes are stored (Where Plex reads it from)
+  - /share/Multimedia/TV:/tv          # Folder on the NAS where TV episodes are stored (Where Plex reads it from)
   - /share/Download/NZBGet/completed/TV:/downloads  # Folder where completed TV downloads are stored (Where NZBGet drops them)
 
 # Plex
-  - /share/Container/plex:/config      #App configuration data
-  - /share/Multimedia/TV:/tv           # Folder where TV episodes are stored
-  - /share/Multimedia/Movies:/movies   # Folder where movies are stored
+  - /share/Container/plex:/config      # App configuration data
+  - /share/Multimedia/TV:/tv           # Folder on the NAS where TV episodes are stored
+  - /share/Multimedia/Movies:/movies   # Folder on the NAS where movies are stored
+  - /share/Multimedia/Pictures:/photos # Folder on the NAS where photos are stored
 ```
 
 ### Network
@@ -103,7 +104,7 @@ Tail logs for Plex. Replace with the name of any other to tail logs within that 
     docker-compose logs -f plex
     ```
 1. Hopefully you should now have your Media Server items listed on your home screen! But they won't be accessible yet. They're still pointing to old folder locations.
-    Browse to **Settings** -> **Libraries** and add the new folder locations to your libraries- internal to the container. These will be `/tv` and `/movies`, respectively.
+    Browse to **Settings** -> **Libraries** and add the new folder locations to your libraries- internal to the container. These will be `/tv` and `/movies` and `/photos`, respectively.
 1. The container configuration passes QNAP's video device for hardware transcoding with `/dev/dri:/dev/dri`. Ensure hardware acceleration is still enabled under **Settings** -> **Transcoder**.
 1. Watch something from each library. Hopefully it works!
 1. With everything confirmed up and running, go ahead and uninstall the old Plex QPKG instance in Application in App Center.
