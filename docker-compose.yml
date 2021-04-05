@@ -20,10 +20,10 @@ services:
     environment:
       - PUID=1004
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Australia/Hobart
     volumes:
       - /share/Container/radarr:/config
-      - /share/Download/NZBGet/completed/Movies:/movies
+      - /share/Multimedia/Movies:/movies
       - /share/Download/NZBGet/completed/Movies:/downloads
     ports:
       - 7878:7878
@@ -35,11 +35,27 @@ services:
     environment:
       - PUID=1004
       - PGID=1000
-      - TZ=Europe/London
+      - TZ=Australia/Hobart
     volumes:
       - /share/Container/sonarr:/config
-      - /share/Multimedia/TV\ Shows:/tv
+      - /share/Multimedia/TV:/tv
       - /share/Download/NZBGet/completed/TV:/downloads
     ports:
       - 8989:8989
+    restart: unless-stopped
+
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1004
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - /share/Container/plex:/config
+      - /share/Multimedia/TV:/tv
+      - /share/Multimedia/Movies:/movies
+    devices:
+      - /dev/dri:/dev/dri
     restart: unless-stopped
