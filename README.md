@@ -108,6 +108,7 @@ This will stop just the Plex container. Replace with the name of any other to st
 ### Updating
 ```
 docker-compose pull
+docker-compose up -d
 ```
 This will update all containers to their latest version. Specify the name of a container to update only that one.
 
