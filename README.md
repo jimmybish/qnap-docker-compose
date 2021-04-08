@@ -15,10 +15,9 @@ git clone https://github.com/jimmybish/qnap-docker-compose.git
 ```
 
 ### Map the appropriate folders with those on the host:
-Edit the config to suit your folder locations or create shared folders where defined in the config.
+Edit the config to suit your folder locations or create shared folders where defined in the config. The folder before `:` is the folder path on the NAS, after `:` is the folder inside the container.
 
 **Folders required:**
-The folder before `:` is the folder path on the NAS, after `:` is the folder inside the container.
 
 ```
 # NZBGet
