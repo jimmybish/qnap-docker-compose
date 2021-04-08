@@ -10,8 +10,12 @@ I wanted to make all my apps on my QNAP NAS portable so they're easy to restore 
 ## Steps and Container Doco
 ### Clone this repository
 QNAPs don't come with Git installed by default. I grabbed Qgit from the [QNAPClub repo](https://www.qnapclub.eu/en).
+
+You'll need to find a folder to store config in, as data stored in `~` won't survive a reboot (I learned that the hard way!). I chose the '/share/Container' fileshare created by Container Station to store both the `docker-compose.yml` config as well as each container's config folder.
 ```
+cd /share/Container
 git clone https://github.com/jimmybish/qnap-docker-compose.git
+cd qnap-docker-compose
 ```
 
 ### Map the appropriate folders with those on the host:
