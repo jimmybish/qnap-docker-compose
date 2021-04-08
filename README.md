@@ -17,7 +17,8 @@ git clone https://github.com/jimmybish/qnap-docker-compose.git
 ### Map the appropriate folders with those on the host:
 Edit the config to suit your folder locations or create shared folders where defined in the config.
 
-Folders required:
+**Folders required:**
+The folder before `:` is the folder path on the NAS, after `:` is the folder inside the container.
 
 ```
 # NZBGet
@@ -117,3 +118,9 @@ This will update all containers to their latest version. Specify the name of a c
 docker-compose logs -f plex
 ```
 Tail logs for Plex. Replace with the name of any other to tail logs within that container.
+
+### Run Bash in a Container (control from within)
+```
+docker exec -it radarr /bin/bash
+```
+The above enters you into a bash session inside the container for troubleshooting things like drive mounts, permissions, and so on. Use Ctrl+D or `exit` to drop back out of the container's shell.
