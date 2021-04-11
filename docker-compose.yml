@@ -18,7 +18,7 @@ services:
     image: ghcr.io/linuxserver/radarr
     container_name: radarr
     environment:
-      - PUID=1004
+      - PUID=1001
       - PGID=1000
       - TZ=Australia/Hobart
     volumes:
