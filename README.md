@@ -50,10 +50,10 @@ Edit the config to suit your folder locations or create shared folders where def
 Containers are configured to run as the `docker-plex` user, which is also a member of the `docker` group (in case I want to create containers that run as other users). I created both via the QNAP Web UI, but confirmed the IDs in the CLI.
 ```
 $ id docker-plex
-uid=1004(docker-plex) gid=100(everyone) groups=100(everyone),1000(docker)
+uid=1001(docker-plex) gid=100(everyone) groups=100(everyone),1000(docker)
 
 # From the yml:
-      - PUID=1004
+      - PUID=1001
       - PGID=1000
 ```
 All app folders are owned by `docker-plex:docker`, while the `docker` group has RW access to the media shares.
