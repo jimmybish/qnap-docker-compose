@@ -4,7 +4,7 @@ services:
     image: ghcr.io/linuxserver/nzbget
     container_name: nzbget
     environment:
-      - PUID=1004
+      - PUID=1001
       - PGID=1000
       - TZ=Australia/Hobart
     volumes:
@@ -33,7 +33,7 @@ services:
     image: ghcr.io/linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID=1004
+      - PUID=1001
       - PGID=1000
       - TZ=Australia/Hobart
     volumes:
@@ -49,7 +49,7 @@ services:
     container_name: plex
     network_mode: host
     environment:
-      - PUID=1004
+      - PUID=1001
       - PGID=1000
       - VERSION=docker
     volumes:
