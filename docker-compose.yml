@@ -9,7 +9,7 @@ services:
       - TZ=Australia/Hobart
     volumes:
       - /share/Container/nzbget:/config
-      - /share/Download/NZBGet:/downloads
+      - /share/Downloads/NZBGet:/downloads
     ports:
       - 6789:6789
     restart: unless-stopped
@@ -24,7 +24,7 @@ services:
     volumes:
       - /share/Container/radarr:/config
       - /share/Multimedia/Movies:/movies
-      - /share/Download/NZBGet/completed/Movies:/downloads
+      - /share/Downloads/NZBGet/completed/Movies:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -39,7 +39,7 @@ services:
     volumes:
       - /share/Container/sonarr:/config
       - /share/Multimedia/TV:/tv
-      - /share/Download/NZBGet/completed/TV:/downloads
+      - /share/Downloads/NZBGet/completed/TV:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -56,7 +56,7 @@ services:
       - /share/Container/plex:/config
       - /share/Multimedia/TV:/tv
       - /share/Multimedia/Movies:/movies
-      - /share/Multimedia/Pictures:/photos
+      - /share/Multimedia/Photos:/photos
       - /share/Backups/plex_db:/db_backups
     devices:
       - /dev/dri:/dev/dri
