@@ -109,7 +109,7 @@ Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the m
 1. With everything confirmed up and running, go ahead and uninstall the old Plex QPKG instance in Application in App Center.
 
 ## Controlling the Containers
-`Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified.
+`Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified with the `-f` option.
 
 ### Starting and Applying Updated Config
 ```
@@ -132,7 +132,7 @@ This will update all containers to their latest version. Specify the name of a c
 
 ### Tail logs
 ```
-docker-compose logs -f plex
+docker logs -f plex
 ```
 Tail logs for Plex. Replace with the name of any other to tail logs within that container.
 
