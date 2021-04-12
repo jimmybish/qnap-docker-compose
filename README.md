@@ -1,5 +1,7 @@
 # Jimmy's QNAP Docker App Configuration
-I wanted to make all my apps on my QNAP NAS portable so they're easy to restore or migrate to another device. Sonarr, Radarr and NZBGet were easy enough to rebuild from scratch, but Plex needed a migration if I wanted to keep my library configuration and watched/unwatched statuses. Here's how I went about it.
+I wanted to make all my apps on my QNAP NAS portable so they're easy to restore or migrate to another device. Sonarr, Radarr and NZBGet were easy enough to build from scratch, but Plex needed a migration if I wanted to keep my library configuration and watched/unwatched statuses. Once the containers are up and running, follow the steps in [Migrate Plex QPKG to Docker.md](https://github.com/jimmybish/qnap-docker-compose/blob/main/Migrate%20Plex%20QPKG%20to%20Docker.md#migrate-plex-from-qpkg-to-docker) to complete the migration.
+
+Otherwise, the below information is fine for a fresh installation as well.
 
 ## Containers Used
 * https://hub.docker.com/r/linuxserver/sonarr
@@ -7,28 +9,19 @@ I wanted to make all my apps on my QNAP NAS portable so they're easy to restore 
 * https://hub.docker.com/r/linuxserver/nzbget
 * https://hub.docker.com/r/linuxserver/plex
 
-## Steps and Container Doco
-### Required Apps
-First, add the [QNAPClub repo](https://www.qnapclub.eu/en) and ensure you can view the contents in App Center. Then install the following:
-* Qgit - Git client to clone this repo.
-* RunLast - Runs scripts on boot, after all QPKG software is loaded. https://github.com/OneCDOnly/RunLast
+## Required Apps
+If creating these containers on a QNAP, add the [QNAPClub repo](https://www.qnapclub.eu/en) and ensure you can view the contents in App Center. Then install the following:
+* **Qgit** - Git client to clone this repo.
+* **RunLast** - Runs scripts on boot, after all QPKG software is loaded. https://github.com/OneCDOnly/RunLast
 
+## Steps and Container Doco
 ### Clone this Repository and Configure the Startup Script
 You'll need to find a folder to store config in, as data stored in `~` won't survive a reboot (I learned that the hard way!). I chose the `/share/Container` fileshare created by Container Station to store both the `docker-compose.yml` config as well as each container's config folder.
 ```
 cd /share/Container
 git clone https://github.com/jimmybish/qnap-docker-compose.git
 cd qnap-docker-compose
-
-# Edit the start-docker-compose.sh script to point to the full path containing docker-compose.yml
-
-# Make start-docker-compose.sh executable
-chmod +x start-docker-compose.sh
-
-# Create a hardlink so RunLast launches the script from its startup folder
-ln start-docker-compose.sh $(getcfg RunLast Install_path -f /etc/config/qpkg.conf)/scripts/start-docker-compose.sh
 ```
-With the `start-docker-compose.sh` script linked in RunLast's `/scripts` folder, RunLast will launch the Docker containers each time the QNAP has finished booting and loading up all QPKG software. Having it as a link instead of copying means the script can be updated in `/share/Container/qnap-docker-compose` and the changes will be reflected in both locations.
 
 ### Map the appropriate folders with those on the host:
 Edit the config to suit your folder locations or create shared folders where defined in the config. The folder before `:` is the folder path on the NAS, after `:` is the folder inside the container.
@@ -76,37 +69,17 @@ You will need to create a user and group and map to your user's IDs in each cont
 All containers except Plex use the standard NAT configuration, since they only require a single incoming port to the web interface. I've kept the port as the default for both inside and outside the container to keep it simple.
 Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the media server in a NAT'ted container can also be a PITA since the incoming connection needs to be on the same subnet. You can Google something like `Plex docker claim server SSH tunnel` and check the [container documentation](https://hub.docker.com/r/linuxserver/plex) for required ports if you want to chase that path. I just set `network_mode: host` to make it all just work.
 
+### Enable auto-start on boot
+If you have cloned the repo to somewhere other than `/share/Container/qnap-docker-compose/`, edit `start-docker-compose.sh` to point to the full path containing docker-compose.yml. Otherwise, continue below:
 
+```
+# Make start-docker-compose.sh executable
+chmod +x start-docker-compose.sh
 
-## Migrate Plex from QPKG to Docker
-
-1. Stop Plex in App Center.
-1. Start the container with default settings to ensure all folder mappings work. The config folder should populate with a default Library and the Web UI will allow you to login with your Plex credentials. Once everything is populated and confirmed as working, stop the container again.
-    ```
-    docker-compose up -d
-    sleep 120
-    docker-compose stop plex
-    ```
-1. Determine the current location of the QPKG Plex library with the following command:
-    ```
-    getcfg -f /etc/config/qpkg.conf PlexMediaServer Install_path
-    ```
-1. Copy the QPKG Library folder to the container's Library folder. This may be huge and will likely take a long time unless you compress it. I chose not to so I can have both a working QPKG installation and a docker image while I verify everything, leaving an easy rollback plan. Delete the default folder if the Plex container had been previously started and replace with the QPKG one:
-    ```
-    rm -rf /share/Container/plex/Library
-    cp -a /share/CACHEDEV1_DATA/.qpkg/PlexMediaServer/Library/Plex\ Media\ Server /share/Container/plex/Library/Application\ Support/
-    ```
-1. Edit the `Preferences.xml` file in the new `Plex Media Server` folder and ensure you have a good place for automatic DB backups, mapped in `docker-compose.yml`. I chose a share on a separate volume that regularly mirrors to a cloud provider. Set `ButlerDatabaseBackupPath=/db_backups` and save the file.
-1. Rebuild and start the container, and check the logs for any errors:
-    ```
-    docker-compose up -d
-    docker-compose logs -f plex
-    ```
-1. Hopefully you should now have your Media Server items listed on your home screen! But they won't be accessible yet. They're still pointing to old folder locations.
-    Browse to **Settings** -> **Libraries** and add the new folder locations to your libraries- internal to the container. These will be `/tv` and `/movies` and `/photos`, respectively.
-1. The container configuration passes QNAP's video device for hardware transcoding with `/dev/dri:/dev/dri`. Ensure hardware acceleration is still enabled under **Settings** -> **Transcoder**.
-1. Watch something from each library. Hopefully it works!
-1. With everything confirmed up and running, go ahead and uninstall the old Plex QPKG instance in Application in App Center.
+# Create a hardlink so RunLast launches the script from its startup folder
+ln start-docker-compose.sh $(getcfg RunLast Install_path -f /etc/config/qpkg.conf)/scripts/start-docker-compose.sh
+```
+With the `start-docker-compose.sh` script hard-linked in RunLast's `/scripts` folder, RunLast will launch the Docker containers each time the QNAP has finished booting and loading up all QPKG software. Having it as a link instead of copying means the script can be updated in `/share/Container/qnap-docker-compose` and the changes will be reflected in both locations.
 
 ## Controlling the Containers
 `Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified with the `-f` option.
