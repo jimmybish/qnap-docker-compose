@@ -3,3 +3,4 @@
 !*.yaml
 !*.gitignore
 !*.md
+!start-docker-compose.sh
