@@ -8,9 +8,12 @@ I wanted to make all my apps on my QNAP NAS portable so they're easy to restore 
 * https://hub.docker.com/r/linuxserver/plex
 
 ## Steps and Container Doco
-### Clone this repository
-QNAPs don't come with Git installed by default. I grabbed Qgit from the [QNAPClub repo](https://www.qnapclub.eu/en).
+### Required Apps
+First, add the [QNAPClub repo](https://www.qnapclub.eu/en) and ensure you can view the contents in App Center. Then install the following:
+* Qgit - Git client to clone this repo.
+* RunLast - Runs scripts on boot, after all QPKG software is loaded. https://github.com/OneCDOnly/RunLast
 
+### Clone this repository
 You'll need to find a folder to store config in, as data stored in `~` won't survive a reboot (I learned that the hard way!). I chose the `/share/Container` fileshare created by Container Station to store both the `docker-compose.yml` config as well as each container's config folder.
 ```
 cd /share/Container
@@ -63,6 +66,8 @@ You will need to create a user and group and map to your user's IDs in each cont
 ### Network
 All containers except Plex use the standard NAT configuration, since they only require a single incoming port to the web interface. I've kept the port as the default for both inside and outside the container to keep it simple.
 Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the media server in a NAT'ted container can also be a PITA since the incoming connection needs to be on the same subnet. You can Google something like `Plex docker claim server SSH tunnel` and check the [container documentation](https://hub.docker.com/r/linuxserver/plex) for required ports if you want to chase that path. I just set `network_mode: host` to make it all just work.
+
+
 
 ## Migrate Plex from QPKG to Docker
 
