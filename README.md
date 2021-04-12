@@ -25,10 +25,10 @@ cd qnap-docker-compose
 # Make start-docker-compose.sh executable
 chmod +x start-docker-compose.sh
 
-# Copy the start script to the RunLast directory
-cp start-docker-compose.sh $(getcfg RunLast Install_path -f /etc/config/qpkg.conf)/scripts
+# Create a hardlink so RunLast launches the script from its startup folder
+ln start-docker-compose.sh $(getcfg RunLast Install_path -f /etc/config/qpkg.conf)/scripts/start-docker-compose.sh
 ```
-With the `start-docker-compose.sh` script copied to RunLast's `/scripts` folder, RunLast will launch the Docker containers each time the QNAP has finished booting and loading up all QPKG software. If the above steps aren't completed, the containers will need to be manually started after every reboot.
+With the `start-docker-compose.sh` script linked in RunLast's `/scripts` folder, RunLast will launch the Docker containers each time the QNAP has finished booting and loading up all QPKG software. Having it as a link instead of copying means the script can be updated in `/share/Container/qnap-docker-compose` and the changes will be reflected in both locations.
 
 ### Map the appropriate folders with those on the host:
 Edit the config to suit your folder locations or create shared folders where defined in the config. The folder before `:` is the folder path on the NAS, after `:` is the folder inside the container.
