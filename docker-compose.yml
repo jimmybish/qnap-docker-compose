@@ -61,3 +61,16 @@ services:
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    environment:
+      - TZ=Australia/Hobart
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /share/Container/portainer:/data
+    ports:
+      - 9000:9000
+      - 8000:8000
+    restart: unless-stopped
