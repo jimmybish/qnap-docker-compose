@@ -12,7 +12,6 @@ Otherwise, the below information is fine for a fresh installation as well.
 ## Required Apps
 If creating these containers on a QNAP, add the [QNAPClub repo](https://www.qnapclub.eu/en) and ensure you can view the contents in App Center. Then install the following:
 * **Qgit** - Git client to clone this repo.
-* **RunLast** - Runs scripts on boot, after all QPKG software is loaded. https://github.com/OneCDOnly/RunLast
 
 ## Steps and Container Doco
 ### Clone this Repository and Configure the Startup Script
@@ -68,18 +67,6 @@ You will need to create a user and group and map to your user's IDs in each cont
 ### Network
 All containers except Plex use the standard NAT configuration, since they only require a single incoming port to the web interface. I've kept the port as the default for both inside and outside the container to keep it simple.
 Plex uses quite a few more ports - both TCP and UDP. Claiming ownership of the media server in a NAT'ted container can also be a PITA since the incoming connection needs to be on the same subnet. You can Google something like `Plex docker claim server SSH tunnel` and check the [container documentation](https://hub.docker.com/r/linuxserver/plex) for required ports if you want to chase that path. I just set `network_mode: host` to make it all just work.
-
-### Enable auto-start on boot
-If you have cloned the repo to somewhere other than `/share/Container/qnap-docker-compose/`, edit `start-docker-compose.sh` to point to the full path containing docker-compose.yml. Otherwise, continue below:
-
-```
-# Make start-docker-compose.sh executable
-chmod +x start-docker-compose.sh
-
-# Create a hardlink so RunLast launches the script from its startup folder
-ln start-docker-compose.sh $(getcfg RunLast Install_path -f /etc/config/qpkg.conf)/scripts/start-docker-compose.sh
-```
-With the `start-docker-compose.sh` script hard-linked in RunLast's `/scripts` folder, RunLast will launch the Docker containers each time the QNAP has finished booting and loading up all QPKG software. Having it as a link instead of copying means the script can be updated in `/share/Container/qnap-docker-compose` and the changes will be reflected in both locations.
 
 ## Controlling the Containers
 `Docker-compose` must be run from the folder containing `docker-compose.yml`. If not, the full path must be specified with the `-f` option.
